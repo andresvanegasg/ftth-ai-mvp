@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+.vscode/
+
+# No subir datasets
+data/raw/**
+data/processed/**
+
+# Mantener placeholders
+!data/raw/**/.gitkeep
+!data/processed/**/.gitkeep
