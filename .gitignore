@@ -10,3 +10,5 @@ data/processed/**
 # Mantener placeholders
 !data/raw/**/.gitkeep
 !data/processed/**/.gitkeep
+
+.venv/
