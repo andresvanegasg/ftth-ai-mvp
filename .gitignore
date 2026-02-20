@@ -2,6 +2,12 @@ __pycache__/
 *.pyc
 .env
 .vscode/
+.DS_Store
+*.log
+*.zip
+
+# No subir entornos virtuales
+.venv/
 
 # No subir datasets
 data/raw/**
@@ -11,4 +17,7 @@ data/processed/**
 !data/raw/**/.gitkeep
 !data/processed/**/.gitkeep
 
-.venv/
+# No subir datos/logs generados por Docker (muy importante)
+docker/syslogng/logs/
+docker/loki-data/
+docker/grafana-data/

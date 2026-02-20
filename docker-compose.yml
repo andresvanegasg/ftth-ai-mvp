@@ -1,0 +1,50 @@
+services:
+  syslogng:
+    image: balabit/syslog-ng:latest
+    container_name: syslogng
+    ports:
+      - "5140:5140/udp"
+    volumes:
+      - ./docker/syslogng/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf:ro
+      - ./docker/syslogng/logs:/var/log/syslog-ng
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:2.9.8
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./docker/loki/loki-config.yaml:/etc/loki/config.yaml:ro
+      - loki_data:/loki
+    command: -config.file=/etc/loki/config.yaml
+    restart: unless-stopped
+
+  promtail:
+    image: grafana/promtail:2.9.8
+    container_name: promtail
+    volumes:
+      - ./docker/promtail/promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - ./docker/syslogng/logs:/var/log/syslog-ng:ro
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4.3
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - loki
+    restart: unless-stopped
+
+volumes:
+  loki_data:
+  grafana_data:
