@@ -44,7 +44,22 @@ services:
     depends_on:
       - loki
     restart: unless-stopped
+  nodered:
+    image: nodered/node-red:3.1
+    container_name: nodered
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=America/Guayaquil
+    volumes:
+      - nodered_data:/data
+    depends_on:
+      - loki
+      - syslogng
+    restart: unless-stopped
 
 volumes:
   loki_data:
   grafana_data:
+  nodered_data:
+  
